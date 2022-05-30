@@ -1,0 +1,592 @@
+import React, {Component} from 'react';
+import {
+  Text,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  TextInput,
+  Alert,
+  ActivityIndicator,
+  Image,
+  ToastAndroid,
+  TouchableWithoutFeedback,
+  Keyboard,
+  SafeAreaView
+} from 'react-native';
+import IconAntDesign from 'react-native-vector-icons/MaterialIcons';
+import {Appbar, Card} from 'react-native-paper';
+
+import * as Animatable from 'react-native-animatable';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import LinearGradient from 'react-native-linear-gradient';
+import {windowHeight,windowWidth} from './utils/Dimensions'
+
+export default class VisitorReason extends Component {
+  constructor(props) {
+    super(props);
+    this.myText = React.createRef();
+    this.state = {
+      searchMeeting: '',
+      listArray: [],
+      purposeData: [],
+      showSearchContent: false,
+      fname: '',
+      lname: '',
+      vistorId: '',
+      purposeValue: '',
+      purposeIndexValue: '',
+      purposeName: '',
+      meetingId: '',
+      loader: false,
+      // mName: '',
+      employId: '',
+      searchLoader: false,
+    };
+  }
+
+  async componentDidMount() {
+    const tokenn = JSON.parse(await AsyncStorage.getItem('token'));
+    const terminal = JSON.parse(await AsyncStorage.getItem('terminalid'));
+
+    try {
+      const localVisitorId = JSON.parse(
+        await AsyncStorage.getItem('visitorId'),
+      );
+
+      const localMobile = JSON.parse(
+        await AsyncStorage.getItem('visitorMobile'),
+      );
+
+      const localFirstName = JSON.parse(
+        await AsyncStorage.getItem('visitorFirstName'),
+      );
+
+      const localLastName = JSON.parse(
+        await AsyncStorage.getItem('visitorLastName'),
+      );
+
+      const localpurposeValue = JSON.parse(
+        await AsyncStorage.getItem('purposeValue'),
+      );
+
+      console.log(
+        'visitorId :',
+        localVisitorId,
+        'visitorMobile : ',
+        localMobile,
+        'visito Firstname : ',
+        localFirstName,
+        'visitorLastName : ',
+        localLastName,
+
+        'localpurposeValue',
+        localpurposeValue,
+      );
+
+      this.setState({
+        vistorId: localVisitorId,
+        mobile: localMobile,
+        fname: localFirstName,
+        lname: localLastName,
+      });
+    } catch (error) {
+      console.log('error in local data :', error);
+    }
+
+  }
+
+  async searchVisitor(value) {
+    const tokenn = JSON.parse(await AsyncStorage.getItem('token'));
+    const terminal = JSON.parse(await AsyncStorage.getItem('terminalid'));
+    // console.log('hlloe');
+    // this.setState({
+    //   listArray: [],
+    // });
+
+    if (!value) {
+      this.setState({listArray: [], showSearchContent: false});
+    }
+
+    this.setState({
+      searchLoader: true,
+    });
+
+    if (this.state.searchMeeting.length === 0) {
+      ToastAndroid.show(
+        "Enter person's name",
+        ToastAndroid.LONG,
+        ToastAndroid.CENTER,
+      );
+      this.setState({
+        searchLoader: false,
+        showSearchContent: false,
+      });
+    } else {
+      let sParameter = this.state.searchMeeting;
+      sParameter = encodeURIComponent(sParameter.trim());
+
+      fetch(`https://ashoka.vizsense.in/api/searchEmp?prefix=` + sParameter, {
+        method: 'GET',
+        headers: {
+          token: tokenn,
+          uid: terminal,
+        },
+      })
+        .then(data => {
+          data.json().then(resp => {
+            console.log('searcher =>', resp);
+            if (resp.response == 'success') {
+              console.log('search =>', resp);
+              this.setState({
+                listArray: resp.data,
+                showSearchContent: true,
+                searchLoader: false,
+              });
+            } else {
+              this.setState({
+                searchLoader: false,
+              });
+              ToastAndroid.show(
+                resp.message,
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM,
+              );
+            }
+          });
+        })
+        .catch(error => {
+          this.setState({
+            searchLoader: false,
+          });
+          Alert.alert(
+            'Alert!',
+            'There has been a problem with your fetch operation.',
+            [{text: 'Ok'}],
+            {cancelable: true},
+          );
+          // ToastAndroid.show(
+          //   error.message,
+          //   ToastAndroid.LONG,
+          //   ToastAndroid.BOTTOM,
+          // );
+          console.log(
+            'There has been a problem with your fetch operation: ' +
+              error.message,
+          );
+        });
+    }
+  }
+
+  checkReason() {
+    if (
+      this.state.employId !== '' &&
+      this.state.mName !== '' &&
+      this.state.mobile !== null
+    ) {
+      this.addVisitorReason();
+    } else {
+      Alert.alert('Alert!', 'Please fill all the fields.', [
+        {text: 'Okay'},
+      ],{cancelable:true});
+    }
+  }
+
+  async addVisitorReason() {
+    // console.log(
+    //   'mobile:',
+    //   this.state.mobile,
+    //   ', meeting:',
+    //   this.state.mName,
+    //   ', purpose value:',
+    //   this.state.purposeValue,
+    // );
+
+    this.setState({
+      loader: true,
+    });
+
+    try {
+      await AsyncStorage.setItem(
+        'meetingName',
+        JSON.stringify(this.state.employId),
+      );
+    } catch (error) {
+      console.log('error' + error);
+    }
+
+    this.getMeetingId();
+  }
+
+  async getMeetingId() {
+    try {
+      const meetingName = JSON.stringify(
+        await AsyncStorage.getItem('meetingName'),
+      );
+
+      console.log('meeting =>', meetingName);
+      this.props.navigation.navigate('VisitorAcc');
+      this.setState({
+        loader: false,
+      });
+    } catch (error) {
+      console.log('error' + error);
+      this.setState({
+        loader: false,
+      });
+    }
+  }
+
+ 
+
+  getTextValue(item) {
+    const meting = item.name;
+
+    this.state.mName = meting;
+    this.state.employId = item.empid;
+    this.state.searchMeeting = meting;
+    this.setState({
+      showSearchContent: false,
+    });
+    console.log(
+      'name => ',
+      this.state.mName,
+      this.state.employId,
+      this.state.searchMeeting,
+    );
+  }
+
+  render() {
+    return (
+      <SafeAreaView duration={400} style={styles.container}>
+        <Appbar.Header style={styles.ttl}>
+          <TouchableOpacity
+            style={{paddingLeft: '2%'}}
+            onPress={() => this.props.navigation.goBack()}>
+            <AntDesign name="arrowleft" color="#05375a" size={25} />
+          </TouchableOpacity>
+
+          <Appbar.Content title="Visitor Entry - Ashoka University, Sonipat" />
+        </Appbar.Header>
+{/* 
+        {this.state.loader ? (
+          <>
+            <View
+              style={{
+                height: '100%',
+                width: '100%',
+                position: 'absolute',
+                elevation: 3,
+                backgroundColor: 'rgba(0,0,0,0.2)',
+              }}></View>
+            <View
+              style={{
+                flex: 1,
+                width: '100%',
+                position: 'absolute',
+                elevation: 3,
+                top: '50%',
+                justifyContent: 'center',
+              }}>
+              <ActivityIndicator size="large" color="#0d6efd" />
+            </View>
+          </>
+        ) : null} */}
+
+        {/* <ScrollView> */}
+        <View style={styles.cr}>
+          <View style={styles.mgt}>
+            <View style={styles.cdm}>
+              <View style={{position:'absolute',top:-30,backgroundColor:"#fff"}}>
+                <Text style={{color: '#959595',fontSize:15}}>
+                  Please select the person with whom the Visitor wants to meet
+                </Text>
+              </View>
+
+              <Text style={styles.fnts}>
+                Name : {this.state.fname + ' ' + this.state.lname}
+              </Text>
+              <Text style={styles.fnts}>Mobile : {this.state.mobile}</Text>
+            </View>
+
+            <View style={styles.cdm}>
+              <Text style={styles.cl}>Meeting Whom</Text>
+              <View style={styles.searchSt}>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                  <TextInput
+                    returnKeyType="go"
+                    placeholder="search"
+                    placeholderTextColor="#696969"
+                    style={styles.searchInputStyle}
+                    value={this.state.searchMeeting}
+                    onChangeText={value => {
+                      this.setState({searchMeeting: value});
+                    }}
+                  />
+                </TouchableWithoutFeedback>
+                <TouchableOpacity
+                  onPress={value => this.searchVisitor(value)}
+                  style={{borderLeftWidth: 1}}>
+                  <IconAntDesign
+                    style={styles.iconStyle}
+                    name="search"
+                    size={25}
+                    color="#696969"
+                  />
+                </TouchableOpacity>
+              </View>
+
+              {!this.state.searchLoader ? (
+                <>
+                  {this.state.showSearchContent ? (
+                    <View
+                      style={{
+                        marginTop: '10%',
+                        width: '100%',
+                      }}>
+                      <View style={styles.flatstyles}>
+                        <ScrollView showsVerticalScrollIndicator={false}>
+                          <View
+                            style={{
+                              marginTop: '5%',
+                              marginBottom: '5%',
+                              width: '100%',
+                            }}>
+                            {this.state.listArray.map((item, i) => {
+                              return (
+                                <React.Fragment key={i}>
+                                  <View style={{elevation: 1}}>
+                                    <TouchableOpacity
+                                      style={styles.searchTextSyle}
+                                      value={this.state.mName}
+                                      onPress={() => this.getTextValue(item)}>
+                                      <Text style={[styles.searchText]}>
+                                        {item.name}
+                                      </Text>
+                                    </TouchableOpacity>
+                                  </View>
+                                </React.Fragment>
+                              );
+                            })}
+                          </View>
+                        </ScrollView>
+                      </View>
+                    </View>
+                  ) : null}
+                </>
+              ) : (
+                <>
+                  <View
+                    style={{
+                      flex: 1,
+                      width: '100%',
+                      position: 'absolute',
+                      elevation: 3,
+                      top: '50%',
+                      justifyContent: 'center',
+                    }}>
+                    <ActivityIndicator size="large" color="#0d6efd" />
+                  </View>
+                </>
+              )}
+            </View>
+          </View>
+
+          <View style={{marginTop: '5%', marginBottom: '8%'}}>
+            <View style={styles.cdm}>
+              <View style={{flexDirection: 'row'}}>
+                <View style={styles.wd}>
+                  <LinearGradient
+                    colors={['#fe8c00', '#fe8c00']}
+                    style={{borderRadius: 5}}>
+                    <TouchableOpacity
+                      onPress={() => this.props.navigation.goBack()}
+                      style={{
+                        flexDirection: 'row',
+                        padding: '5%',
+                        borderRadius: 5,
+                        width: '100%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          padding: '5%',
+                          // marginLeft: '7%',
+                          marginTop: '1%',
+                        }}>
+                        <AntDesign
+                          name="arrowleft"
+                          size={20}
+                          style={{color: 'white'}}
+                        />
+                      </Text>
+                      <Text
+                        style={{
+                          color: '#fff',
+                          fontWeight: 'bold',
+                          marginRight: '10%',
+                          fontSize: 16,
+                        }}>
+                        Back
+                      </Text>
+                    </TouchableOpacity>
+                  </LinearGradient>
+                </View>
+
+                <View style={styles.wd}></View>
+
+                <View style={styles.wd}>
+                  <LinearGradient
+                    colors={['#fe8c00', '#fe8c00']}
+                    style={{borderRadius: 5}}>
+                    <TouchableOpacity
+                      onPress={() => this.checkReason()}
+                      style={{
+                        flexDirection: 'row',
+                        padding: '5%',
+                        borderRadius: 5,
+                        width: '100%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          color: '#fff',
+                          fontWeight: 'bold',
+                          marginLeft: '10%',
+                          fontSize: 16,
+                        }}>
+                        Next
+                      </Text>
+                      <Text style={{padding: '5%'}}>
+                        <AntDesign
+                          name="arrowright"
+                          size={20}
+                          style={{color: 'white'}}
+                        />
+                      </Text>
+                    </TouchableOpacity>
+                  </LinearGradient>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+        {/* </ScrollView> */}
+
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            marginBottom: '3%',
+            marginLeft: '5%',
+            left: 0,
+            right: 0,
+            alignItems: 'center',
+          }}>
+          <View style={styles.link}>
+            <Image
+              source={require('./image/partner.png')}
+              style={{width: 200, height: 35}}
+            />
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+
+  ttl: {
+    backgroundColor: '#ffffff',
+  },
+  flatstyles: {
+    maxHeight: windowWidth-90,
+    width: '100%',
+    // position: 'absolute',
+    // elevation: 1,
+    backgroundColor: '#f1f1f1',
+    borderRadius: 5,
+    borderWidth: 1,
+  },
+
+  searchSt: {
+    marginTop: 8,
+    width: '100%',
+    backgroundColor: '#f1f1f1',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderRadius: 5,
+    borderWidth: 1,
+  },
+  iconStyle: {
+    paddingTop: 15,
+    marginHorizontal: 10,
+  },
+  searchText: {
+    flex: 1,
+    fontSize: 22,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  searchTextSyle: {
+    width: '100%',
+    // flex: 1,
+    marginVertical: 2,
+
+    margin: 0,
+    backgroundColor: '#fff',
+  },
+  searchInputStyle: {
+    flex: 1,
+    width: '100%',
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    margin: 0,
+    color: 'black',
+  },
+  fnts: {
+    fontSize: 16,
+    color: '#212529',
+    marginTop:'5%'
+  },
+  cl: {
+    color: '#6f6f6f',
+  },
+  wd: {
+    width: '33%',
+  },
+  cr: {
+    margin: '3%',
+    marginTop: '10%',
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 3,
+  },
+  cdm: {
+    width: '90%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginBottom: '5%',
+  },
+ 
+  mgt: {
+    marginTop: '5%',
+  },
+ 
+
+  
+});
