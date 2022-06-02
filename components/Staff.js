@@ -69,9 +69,9 @@ export default class Staff extends Component {
         uid: terminal,
       },
     })
-      .then(data => {
-        data.json().then(async resp => {
-          console.log('reasone =>', resp.data[0]);
+      .then(result => {
+        result.json().then(async resp => {
+          console.log('reasone =>', resp);
           if (resp.response === 'success') {
             this.setState({
               purposeData: resp.data,
@@ -79,10 +79,19 @@ export default class Staff extends Component {
 
             });
             // console.log('puo :--------------------------', this.state.staffData);
+          }else{
+            this.setState({
+              loader:false
+            })
+            Alert.alert('Error!','Something Wents Wrong. Please Log-IN again.',[{text:"Ok"}],{cancelable:true})
           }
         });
       })
       .catch(error => {
+        this.setState({
+          loader: false,
+        })
+        Alert.alert('Alert!','There has been a problem with your fetch operation',[{text:'Ok'}],{cancelable:true})
         console.log(
           'There has been a problem with your fetch operation: ' +
           error.message,

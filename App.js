@@ -5,7 +5,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import HomeScreen1 from './components/HomeScreen1';
 import Home from './components/Home';
 import Login from './components/Login';
 import Staff from './components/Staff';
@@ -26,6 +25,11 @@ import SplashScreen from 'react-native-splash-screen';
 import VisitorReason from './components/VisitorReason';
 import EmployeeScann from './components/EmployeeScann';
 import VisitorWithoutMobile from './components/VisitorWithoutMobile';
+import StaffEntryMobile from './components/supportStaff/StaffEntryMobile';
+import StaffEntryQR from './components/supportStaff/StaffEntryQR';
+import StaffExitCode from './components/supportStaff/StaffExitCode';
+import StaffExitMobile from './components/supportStaff/StaffExitMobile';
+import StaffInList from './components/supportStaff/StaffInList';
 import PopUp from './components/PopUp';
 import Nav from './components/Nav';
 import StaffOut from './components/StaffOut';
@@ -91,6 +95,11 @@ export default class App extends Component {
             <Stack.Screen name="AddStaff" component={AddStaff} />
             <Stack.Screen name="StaffDetails" component={StaffDetails} />
             <Stack.Screen name="StaffEdit" component={StaffEdit} />
+            <Stack.Screen name="StaffEntryMobile" component={StaffEntryMobile} />
+            <Stack.Screen name="StaffEntryQR" component={StaffEntryQR} />
+            <Stack.Screen name="StaffExitCode" component={StaffExitCode} />
+            <Stack.Screen name="StaffExitMobile" component={StaffExitMobile} />
+            <Stack.Screen name="StaffInList" component={StaffInList} />
 
             <Stack.Screen name="PrintVisitor" component={PrintVisitor} />
             <Stack.Screen name="ReadQr" component={ReadQr} />

@@ -157,7 +157,7 @@ export default class VisitorList extends Component {
                   />
 
                   <View style={styles.rightIcon}>
-                    <Text style={styles.textSign}>Visitor Exit Mobile</Text>
+                    <Text style={styles.textSign}>Visitor Exit With Mobile</Text>
 
                     <View style={{flex: 1}}>
                       <MaterialIcons
@@ -193,7 +193,7 @@ export default class VisitorList extends Component {
                   />
 
                   <View style={styles.rightIcon}>
-                    <Text style={styles.textSign}>Visitor Exit Code</Text>
+                    <Text style={styles.textSign}>Visitor Exit With Code</Text>
 
                     <View style={{flex: 1}}>
                       <MaterialIcons
@@ -229,7 +229,7 @@ export default class VisitorList extends Component {
                   />
 
                   <View style={styles.rightIcon}>
-                    <Text style={styles.textSign}>Visitor Exit List</Text>
+                    <Text style={styles.textSign}>Visitor Exit From List</Text>
 
                     <View style={{flex: 1}}>
                       <MaterialIcons

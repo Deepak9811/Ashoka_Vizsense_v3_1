@@ -8,14 +8,14 @@ import {
   ActivityIndicator,
   ToastAndroid,
   Alert,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native';
 
 import {Checkbox, Appbar, TextInput} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import * as Animatable from 'react-native-animatable';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { windowWidth } from './utils/Dimensions';
+import {windowWidth} from './utils/Dimensions';
 
 export default class ListInside extends Component {
   constructor(props) {
@@ -78,7 +78,11 @@ export default class ListInside extends Component {
         this.setState({
           loader: false,
         });
-        ToastAndroid.show(error, ToastAndroid.LONG, ToastAndroid.BOTTOM);
+        ToastAndroid.show(
+          error.message,
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+        );
       });
   }
 
@@ -164,7 +168,11 @@ export default class ListInside extends Component {
         this.setState({
           loader: false,
         });
-        ToastAndroid.show(error, ToastAndroid.LONG, ToastAndroid.BOTTOM);
+        ToastAndroid.show(
+          error.message,
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+        );
       });
   }
 
@@ -252,7 +260,11 @@ export default class ListInside extends Component {
         this.setState({
           loader: false,
         });
-        ToastAndroid.show(error, ToastAndroid.LONG, ToastAndroid.BOTTOM);
+        ToastAndroid.show(
+          error.message,
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+        );
       });
   }
 
@@ -294,12 +306,10 @@ export default class ListInside extends Component {
           <Appbar.Content title="Visitor In Campus - Ashoka University, Sonipat" />
         </Appbar.Header>
 
-        
-
-          <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.cr}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.cr}>
             <View style={{flexDirection: 'row'}}>
-              <Text style={{width: windowWidth/4}}>Total Users</Text>
+              <Text style={{width: windowWidth / 4}}>Total Users</Text>
               <Text>: {this.state.data.length}</Text>
             </View>
             <Text>Selected Users : {this.state.deletionArray.length}</Text>
@@ -392,10 +402,8 @@ export default class ListInside extends Component {
                 );
               })}
             </View>
-
-            
-        </View>
-          </ScrollView>
+          </View>
+        </ScrollView>
 
         {this.state.loader ? (
           <>
@@ -431,7 +439,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   ttl: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#fff',
   },
   cr: {
     padding: '5%',

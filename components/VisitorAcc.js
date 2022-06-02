@@ -61,12 +61,12 @@ async  cameraCapture() {
    
     try {
       const imagePickerRes = await ImagePicker.openCamera({
-        width: 300,
-          height: 400,
+        width: 180,
+          height: 200,
           cropping: false,
           includeBase64: true,
           compressImageQuality: 1,
-          size: 20,
+          size: 5,
       })
       console.log('imagePicker Result : ', imagePickerRes)
       this.setState({
@@ -81,12 +81,12 @@ async  cameraCapture() {
     
 
     // ImagePicker.openCamera({
-    //   width: 300,
-    //   height: 400,
+    //   width: 180,
+    //   height: 200,
     //   cropping: false,
     //   includeBase64: true,
     //   compressImageQuality: 1,
-    //   size: 25,
+    //   size: 5,
     // })
     //   .then(image => {
     //     console.warn(image);
@@ -109,12 +109,12 @@ async  cameraCapture() {
     });
 
     ImagePicker.openCamera({
-      width: 300,
-      height: 400,
+      width: 180,
+      height: 200,
       cropping: false,
       includeBase64: true,
       compressImageQuality: 1,
-      size: 25,
+      size: 5,
     })
       .then(image => {
         console.warn(image.size);
@@ -139,12 +139,12 @@ async  cameraCapture() {
     });
 
     ImagePicker.openCamera({
-      width: 300,
-      height: 400,
+      width: 180,
+      height: 200,
       cropping: false,
       includeBase64: true,
       compressImageQuality: 1,
-      size: 25,
+      size: 5,
     })
       .then(image => {
         console.warn(image.size);
@@ -169,12 +169,12 @@ async  cameraCapture() {
     });
 
     ImagePicker.openCamera({
-      width: 300,
-      height: 400,
+      width: 180,
+      height: 200,
       cropping: false,
       includeBase64: true,
       compressImageQuality: 1,
-      size: 25,
+      size: 5,
     })
       .then(image => {
         console.warn(image.size);
@@ -248,7 +248,7 @@ async  cameraCapture() {
     const terminal = JSON.parse(await AsyncStorage.getItem('terminalid'));
 
     if (this.state.image1.length !== 0) {
-      // console.log(this.state.image1);
+      console.log('check save');
 
       this.setState({
         loader: true,
@@ -592,7 +592,7 @@ async  cameraCapture() {
                     <View style={styles.wd}>
                       <LinearGradient
                         colors={['#fe8c00', '#fe8c00']}
-                        style={{borderRadius: 5}}>
+                        style={{borderRadius: 2}}>
                         <TouchableOpacity
                           onPress={() => this.props.navigation.goBack()}
                           // onPress={() => {
@@ -638,7 +638,7 @@ async  cameraCapture() {
                     <View style={styles.wd}>
                       <LinearGradient
                         colors={['#fe8c00', '#fe8c00']}
-                        style={{borderRadius: 5}}>
+                        style={{borderRadius: 2}}>
                         <TouchableOpacity
                           onPress={() => this.saveVisitorData()}
                           style={{

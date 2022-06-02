@@ -40,6 +40,8 @@ export default class Setting extends Component {
 
       if (bluetoothStatus == true) {
         this.setState({bluetooth: true});
+      }if (bluetoothStatus == null) {
+        this.setState({bluetooth: true});
       } else {
         this.setState({bluetooth: false});
       }

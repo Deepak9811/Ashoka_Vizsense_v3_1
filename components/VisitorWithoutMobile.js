@@ -354,7 +354,7 @@ export class VisitorWithoutMobile extends Component {
                     <View style={styles.wd}>
                       <LinearGradient
                         colors={['#fe8c00', '#fe8c00']}
-                        style={{borderRadius: 5}}>
+                        style={{borderRadius: 2}}>
                         <TouchableOpacity
                           onPress={() => this.props.navigation.goBack()}
                           style={[
@@ -390,7 +390,7 @@ export class VisitorWithoutMobile extends Component {
                     <View style={styles.wd}>
                       <LinearGradient
                         colors={['#fe8c00', '#fe8c00']}
-                        style={{borderRadius: 5}}>
+                        style={{borderRadius: 2}}>
                         <TouchableOpacity
                           onPress={() => {
                             this.check();

@@ -47,10 +47,12 @@ export default class PrintVisitor extends Component {
     };
   }
 
-  async checkVisitorSinglePage() {
+  async checkPrinter() {
     try {
       let status = JSON.parse(await AsyncStorage.getItem('bluetoothStatus'));
       if (status == true) {
+        this.setState({bluetoothStatus: true});
+      }if (status == null) {
         this.setState({bluetoothStatus: true});
       } else {
         this.setState({bluetoothStatus: false});
@@ -61,7 +63,7 @@ export default class PrintVisitor extends Component {
   }
 
   async componentDidMount() {
-    this.checkVisitorSinglePage();
+    this.checkPrinter();
     try {
       const blueName = JSON.parse(await AsyncStorage.getItem('blueName'));
       const blueAddress = JSON.parse(await AsyncStorage.getItem('blueAddress'));
@@ -405,7 +407,7 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 5,
+    borderRadius: 2,
   },
   textSign: {
     fontSize: 16,

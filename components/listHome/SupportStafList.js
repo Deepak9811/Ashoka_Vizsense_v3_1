@@ -12,10 +12,10 @@ const SupportStafList = ({navigation}) => {
   return (
     <View style={styles.cr}>
       <View style={styles.inp}>
-        <TouchableOpacity onPress={() => navigation.navigate('EmployeeIn')}>
           <LinearGradient
            colors={['#fe8c00', '#fe8c00']}
           >
+        <TouchableOpacity onPress={() => navigation.navigate('StaffEntryMobile')}>
           <View style={[styles.signIn]}>
             <View style={{flexDirection: 'row'}}>
               <Ionicons name="log-in-outline" size={28} style={{marginRight: '3%'}} color={"#fff"} />
@@ -28,16 +28,16 @@ const SupportStafList = ({navigation}) => {
               </View>
             </View>
           </View>
+        </TouchableOpacity>
           </LinearGradient>
           
-        </TouchableOpacity>
       </View>
 
       <View style={[styles.inp,]}>
+        <LinearGradient    colors={['#fe8c00', '#fe8c00']}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('ReadQr')}>
-            <LinearGradient    colors={['#fe8c00', '#fe8c00']}>
+          onPress={() => navigation.navigate('StaffEntryQR')}>
             <View style={[styles.signIn]}>
             <View style={{flexDirection: 'row'}}>
               <Ionicons name="log-in-outline" size={28} style={{marginRight: '3%'}} color={"#fff"} />
@@ -51,16 +51,16 @@ const SupportStafList = ({navigation}) => {
               </View>
             </View>
           </View>
-            </LinearGradient>
         
         </TouchableOpacity>
+            </LinearGradient>
       </View>
 
       <View style={[styles.inp, ]}>
+        <LinearGradient    colors={['#fe8c00', '#fe8c00']}>
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('Staff')}>
-              <LinearGradient    colors={['#fe8c00', '#fe8c00']}>
               <View style={[styles.signIn]}>
             <View style={{flexDirection: 'row'}}>
               <Ionicons name="log-in-outline" size={28} style={{marginRight: '3%'}} color={"#fff"} />
@@ -74,16 +74,16 @@ const SupportStafList = ({navigation}) => {
               </View>
             </View>
           </View>
+        </TouchableOpacity>
             </LinearGradient>
       
-        </TouchableOpacity>
       </View>
 
       <View style={styles.inp}>
-        <TouchableOpacity onPress={() => navigation.navigate('EmployeeIn')}>
           <LinearGradient
            colors={['#fe8c00', '#fe8c00']}
           >
+        <TouchableOpacity onPress={() => navigation.navigate('StaffExitMobile')}>
           <View style={[styles.signIn]}>
             <View style={{flexDirection: 'row'}}>
               <Ionicons name="log-in-outline" size={28} style={{marginLeft:"0.5%",marginRight: '3%',transform: [{rotate: '-180deg'}]}} color={"#fff"} />
@@ -96,23 +96,23 @@ const SupportStafList = ({navigation}) => {
               </View>
             </View>
           </View>
+        </TouchableOpacity>
           </LinearGradient>
           
-        </TouchableOpacity>
       </View>
 
 
       <View style={[styles.inp,]}>
+        <LinearGradient    colors={['#fe8c00', '#fe8c00']}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('ReadQr')}>
-            <LinearGradient    colors={['#fe8c00', '#fe8c00']}>
+          onPress={() => navigation.navigate('StaffExitCode')}>
             <View style={[styles.signIn]}>
             <View style={{flexDirection: 'row'}}>
               <Ionicons name="log-in-outline" size={28} style={{marginLeft:"0.5%",marginRight: '3%',transform: [{rotate: '-180deg'}]}} color={"#fff"} />
              
               <View style={styles.rightIcon}>
-              <Text style={styles.textSign}>S.Staff Exit With QR</Text>
+              <Text style={styles.textSign}>S.Staff Exit With Code</Text>
 
                <View style={{ flex:1}}>
                 <MaterialIcons name="qr-code-scanner" size={25} style={{textAlign:"right"}} color={"#fff"} />
@@ -120,23 +120,23 @@ const SupportStafList = ({navigation}) => {
               </View>
             </View>
           </View>
+        </TouchableOpacity>
             </LinearGradient>
         
-        </TouchableOpacity>
       </View>
 
 
       <View style={[styles.inp, ]}>
+        <LinearGradient    colors={['#fe8c00', '#fe8c00']}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('ReadQr')}>
-              <LinearGradient    colors={['#fe8c00', '#fe8c00']}>
+          onPress={() => navigation.navigate('StaffInList')}>
               <View style={[styles.signIn]}>
             <View style={{flexDirection: 'row'}}>
               <Ionicons name="log-in-outline" size={28} style={{marginLeft:"0.5%",marginRight: '3%',transform: [{rotate: '-180deg'}]}} color={"#fff"} />
              
               <View style={styles.rightIcon}>
-              <Text style={styles.textSign}>S.Staff Exit From Vendor List</Text>
+              <Text style={styles.textSign}>S.Staff Exit From Vendor IN List</Text>
 
                <View style={{ flex:1}}>
                 <MaterialIcons name="format-list-bulleted" size={25} style={{textAlign:"right"}} color={"#fff"} />
@@ -144,9 +144,9 @@ const SupportStafList = ({navigation}) => {
               </View>
             </View>
           </View>
+        </TouchableOpacity>
             </LinearGradient>
       
-        </TouchableOpacity>
       </View>
     </View>
   );
