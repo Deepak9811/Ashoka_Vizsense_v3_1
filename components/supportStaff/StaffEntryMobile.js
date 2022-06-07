@@ -27,9 +27,96 @@ import IconAntDesign from 'react-native-vector-icons/MaterialIcons';
 
 const StaffEntryMobile = ({navigation}) => {
   const [mobile, setMobile] = useState('');
+  const [mobileData, setmobileData] = useState([{'person1':9811929305},{'person2':8285896425}])
+  const [personData, setpersonData] = useState([])
+  const [fname, setfname] = useState('')
+  const [lname, setlname] = useState('')
+  const [vendor, setvendor] = useState('')
+  const [joinedon, setjoinedon] = useState('')
+  const [image, setimage] = useState('')
+  const [showImage, setshowImage] = useState(true)
+  const [validtill, setvalidtill] = useState('')
+  const [showDetails, setshowDetails] = useState(false)
+  const [loader, setloader] = useState(false)
 
-  const searchVendor=()=>{
-    let url = `https://ashoka.vizsense.in/api/sslog?id=${this.state.slipID}&mode=2 `
+  const searchMobile=()=>{
+    if(mobileData[1]=== mobile){
+      setshowDetails(true)
+    }else{
+      Alert.alert('Error!','NO data found',[{text:'Ok'}],{cancelable:true})
+    }
+  }
+
+  const searchVendor=async()=>{
+    let url = `https://ashoka.vizsense.in/api/supportstaff?vendorId=1&prefix=&staffId=26 `
+
+    const tokenn = JSON.parse(await AsyncStorage.getItem('token'));
+    const terminal = JSON.parse(await AsyncStorage.getItem('terminalid'));
+    const loc = await AsyncStorage.getItem('staffId');
+    const purp = await AsyncStorage.getItem('purposeValue');
+
+    console.log(loc, purp);
+    fetch(url,
+      {
+        method: 'GET',
+        headers: {
+          token: tokenn,
+          uid: terminal,
+        },
+      },
+    )
+      .then(result => {
+        result.json().then(resp => {
+          console.log('userAddress : ', resp.data[0]);
+
+          if (resp.response === 'success') {
+            setpersonData( resp.data[0])
+            this.setState({
+              employeeId: resp.data[0].employeeId,
+              fname: resp.data[0].fname,
+              lname: resp.data[0].lname,
+              vendor: resp.data[0].vendor,
+              mobile: resp.data[0].mobile,
+              joinedon: resp.data[0].joinedon,
+              validtill: resp.data[0].validtill,
+
+              showPhoto: true,
+              loader: false,
+            });
+
+            if (resp.data[0].photo === '') {
+              console.log('empt');
+              this.setState({
+                showPhoto: false,
+              });
+            } else {
+              this.setState({
+                image1: resp.data[0].photo,
+                showPhoto: true,
+              });
+            }
+          } else {
+            this.setState({
+              loader: false,
+            });
+            ToastAndroid.show(
+              'Something wents wrong.',
+              ToastAndroid.LONG,
+              ToastAndroid.BOTTOM,
+            );
+          }
+
+          // console.log(this.state.image);
+        });
+      })
+      .catch(error => {
+        this.setState({
+          loader: false,
+        });
+        Alert.alert('Error', error.message, [{text: 'Okay'}], {
+          cancelable: true,
+        });
+      });
   }
 
   return (
@@ -79,6 +166,10 @@ const StaffEntryMobile = ({navigation}) => {
                 </TouchableOpacity>
               </View>
             </View>
+
+
+
+
             
 
 
